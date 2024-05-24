@@ -25,3 +25,7 @@ Of these known limitations the only one that might possibly be fixed in the futu
 ## My Other Plugins
 
 To see my other Alt1 plugins [click here](https://github.com/NadyaNayme/NyusPluginDirectory)
+
+## Alternative
+
+I would highly recommend [Shaggy's Ability Tracker](https://github.com/ShaggyHW/RS3AbilityTracker/). It requires some initial configuration to get it setup properly but if you take the time to do so it will be more reliable than my action bar tracker. It can also function as an overlay preventing you from misclicking it while PvMing. It does, however, require you to trust Shaggy as ability trackers that listen for specific keys are essentially keyloggers. I wouldn't recommend the program if I hadn't read the source code and trust it myself. If you do not trust the release build supplied by Shaggy you can compile the program from source yourself with Visual Studio.
