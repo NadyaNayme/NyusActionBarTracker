@@ -1,6 +1,6 @@
 {
-	"appName": "CombatErrorLog",
-	"description": "Bad cat.",
+	"appName": "NyusActionBarTracker",
+	"description": "Track your actions.",
 	"appUrl": "./index.html",
 	"configUrl": "./appconfig.json",
 	"iconUrl": "./icon.png",

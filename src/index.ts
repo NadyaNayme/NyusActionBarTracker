@@ -17,8 +17,11 @@ function getByID(id: string) {
 	return document.getElementById(id);
 }
 
+let recentlyDetected = false;
+
 let helperItems = {
 	Output: getByID('output'),
+	abilityHistory: <HTMLUListElement>getByID('abilityHistory'),
 	settings: getByID('Settings'),
 };
 
@@ -26,7 +29,8 @@ var abilityHighlight = a1lib.webpackImages({
 	highlightBorder: require('./asset/data/ability-border-3.data.png'),
 });
 
-function tryFindAbility() {
+let history = [];
+async function tryFindAbility() {
 	let client_screen = a1lib.captureHoldFullRs();
 
 	let usedAbility = {
@@ -35,16 +39,53 @@ function tryFindAbility() {
 		),
 	};
 
-	if (usedAbility.abilityPosition[0] !== undefined) {
-		console.log(`
-			x: ${usedAbility.abilityPosition[0].x}
-			y: ${usedAbility.abilityPosition[0].y}`);
+	if (usedAbility.abilityPosition[0] !== undefined && !recentlyDetected) {
+	let positions = {
+		x: usedAbility.abilityPosition[0].x,
+		y: usedAbility.abilityPosition[0].y,
+	};
+
+	if (
+		history.some(
+			(ability) => ability.x === positions.x && ability.y === positions.y
+		)
+	) {
+		console.log('Repeated ability?');
+		return;
+	}
+		recentlyDetected = true;
+		captureAsImage(
+			usedAbility.abilityPosition[0].x,
+			usedAbility.abilityPosition[0].y
+		);
+		setTimeout(function () {
+			recentlyDetected = false;
+		}, 300);
 	}
 }
 
-async function scanForAbilityUse() {
-	tryFindAbility();
-	new Promise((resolve) => setTimeout(resolve, 50));
+async function captureAsImage(x, y) {
+	if (helperItems.abilityHistory.children.length >= 20) {
+		helperItems.abilityHistory.children.item(0).remove();
+	}
+	setTimeout(function() {
+		let abilityImage = a1lib.captureHold(x + 2, y + 1, 32, 32);
+		let ability = document.createElement('li');
+		let img = document.createElement('img');
+			img.src = 'data:image/png;base64,' + abilityImage.toData().toPngBase64();
+			ability.appendChild(img);
+			helperItems.abilityHistory.appendChild(ability);
+		history.push({ x: x, y: y });
+	}, 50);
+	setTimeout(function() {
+		clearHistory();
+	}, 900);
+}
+
+async function clearHistory() {
+	if (history.length > 0) {
+		history.shift();
+	}
 }
 
 export function startApp() {
@@ -70,8 +111,27 @@ export function startApp() {
 		return;
 	}
 
-	setInterval(scanForAbilityUse, 20);
+	setInterval(tryFindAbility, 100);
 }
+
+const settingsObject = {
+	settingsHeader: sauce.createHeading('h2', 'Settings'),
+	reverse: sauce.createCheckboxSetting('reverse', 'Reverse Direction', sauce.getSetting('reverse') ?? false),
+	abilitySize: sauce.createRangeSetting('abilitySize', 'Size of ability images', { defaultValue: '32', min: 16, max: 128, unit: 'px' })
+};
+
+settingsObject.reverse.addEventListener('change', function () {
+	helperItems.abilityHistory.classList.toggle(
+		'reverse',
+	);
+});
+
+settingsObject.abilitySize.addEventListener('change', function () {
+	let size = parseInt(sauce.getSetting('abilitySize'), 10);
+	let sheet = getByID('abilitySizes');
+	sheet.innerHTML = `#abilityHistory li { min-width: ${size}px; max-width: ${size}px;`;
+	document.body.appendChild(sheet);
+});
 
 window.onload = function () {
 	//check if we are running inside alt1 by checking if the alt1 global exists
@@ -81,6 +141,14 @@ window.onload = function () {
 		//also updates app settings if they are changed
 
 		alt1.identifyAppUrl('./appconfig.json');
+		Object.values(settingsObject).forEach((val) => {
+			helperItems.settings.before(val);
+		});
+		let size = parseInt(sauce.getSetting('abilitySize'), 10);
+		let sheet = document.createElement('style');
+		sheet.id = 'abilitySizes';
+		sheet.innerHTML = `#abilityHistory li { min-width: ${size}px; max-width: ${size}px;`;
+		document.body.appendChild(sheet);
 		startApp();
 	} else {
 		let addappurl = `alt1://addapp/${
