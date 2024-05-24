@@ -29,3 +29,10 @@ To see my other Alt1 plugins [click here](https://github.com/NadyaNayme/NyusPlug
 ## Alternative
 
 I would highly recommend [Shaggy's Ability Tracker](https://github.com/ShaggyHW/RS3AbilityTracker/). It requires some initial configuration to get it setup properly but if you take the time to do so it will be more reliable than my action bar tracker. It can also function as an overlay preventing you from misclicking it while PvMing. It does, however, require you to trust Shaggy as ability trackers that listen for specific keys are essentially keyloggers. I wouldn't recommend the program if I hadn't read the source code and trust it myself. If you do not trust the release build supplied by Shaggy you can compile the program from source yourself with Visual Studio.
+
+If the alternative is so much better why does this plugin exist at all?
+
+- Doesn't require trusting another executable program. You only need to trust Alt1.
+- Zero config/setup. Works out of the box and is Accurate Enough™ to be usable. If you adjust your keybinds you don't need to reconfigure the entire program.
+- Due to how actions are captured - will automatically update for any new abilities and items that cause a highlight when pressed
+- Since it doesn't actually care about your action bars if your action bars change (eg. changing mainhand weapon style) it will continue to track your new action bar accurately
