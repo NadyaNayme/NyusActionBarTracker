@@ -5314,7 +5314,7 @@ window.onload = function () {
         settings
             .addHeader(`h2`, `Settings - v ${_data_constants__WEBPACK_IMPORTED_MODULE_5__.majorVersion}.${_data_constants__WEBPACK_IMPORTED_MODULE_5__.minorVersion}.${_data_constants__WEBPACK_IMPORTED_MODULE_5__.patchVersion}`)
             .addCheckboxSetting('inverseDirection', 'Reverse Sort (Newest->Oldest)', (_a = (0,_A1Sauce_Settings_Storage__WEBPACK_IMPORTED_MODULE_6__.getSetting)('inverseDirection')) !== null && _a !== void 0 ? _a : false)
-            .addCheckboxSetting('activeOverlay', 'Use Interface instead of Overlay', (_b = (0,_A1Sauce_Settings_Storage__WEBPACK_IMPORTED_MODULE_6__.getSetting)('activeOverlay')) !== null && _b !== void 0 ? _b : false)
+            .addCheckboxSetting('activeOverlay', 'Use Overlay instead of App Interface', (_b = (0,_A1Sauce_Settings_Storage__WEBPACK_IMPORTED_MODULE_6__.getSetting)('activeOverlay')) !== null && _b !== void 0 ? _b : true)
             .addRangeSetting('appScale', 'Image Size (App View)', { defaultValue: (_c = (0,_A1Sauce_Settings_Storage__WEBPACK_IMPORTED_MODULE_6__.getSetting)('appScale')) !== null && _c !== void 0 ? _c : '100', min: 32, max: 300, unit: 'px' })
             .addRangeSetting('scaleFactor', 'Scale (Overlay View)', { defaultValue: (_d = (0,_A1Sauce_Settings_Storage__WEBPACK_IMPORTED_MODULE_6__.getSetting)('scaleFactor')) !== null && _d !== void 0 ? _d : '100', min: 10, max: 300, unit: '%' })
             .addColorSetting('borderColor', 'Border Color', '#FF0000')

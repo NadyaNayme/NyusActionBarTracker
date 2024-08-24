@@ -288,8 +288,8 @@ window.onload = function () {
 			)
 			.addCheckboxSetting(
 				'activeOverlay',
-				'Use Interface instead of Overlay',
-				getSetting('activeOverlay') ?? false
+				'Use Overlay instead of App Interface',
+				getSetting('activeOverlay') ?? true
 			)
 			.addRangeSetting(
 				'appScale',
