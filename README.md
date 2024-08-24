@@ -1,5 +1,8 @@
 # Nyu's Action Bar Tracker
 
+![image](https://github.com/user-attachments/assets/86880212-5d98-4081-aecc-0607fc83033c)
+
+
 Track your actions as you use them.
 
 ## How to Install & Required Settings
