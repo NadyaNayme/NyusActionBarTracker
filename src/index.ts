@@ -76,9 +76,6 @@ async function tryFindAbility(imagewidth: number) {
 			usedAbility.abilityPosition[0].y,
 			imagewidth
 		);
-		setTimeout(function () {
-			recentlyDetected = false;
-		}, 300);
 	}
 }
 
@@ -114,12 +111,17 @@ async function captureAsImage(x: number, y: number, imagewidth: number) {
 					.replace(transparent, darkRed)
 			);
 			renderOverlay(imagewidth);
+			history.push({ x: x, y: y });
 		}
 	}, 50);
 
-	setTimeout(function () {
+	setTimeout(() => {
+		recentlyDetected = false;
+	}, 450);
+
+	setTimeout(() => {
 		clearHistory();
-	}, 900);
+	}, 1050);
 }
 
 async function renderOverlay(imagewidth: number) {

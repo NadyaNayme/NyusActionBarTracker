@@ -5182,9 +5182,6 @@ async function tryFindAbility(imagewidth) {
         }
         recentlyDetected = true;
         captureAsImage(usedAbility.abilityPosition[0].x, usedAbility.abilityPosition[0].y, imagewidth);
-        setTimeout(function () {
-            recentlyDetected = false;
-        }, 300);
     }
 }
 const overlays = [];
@@ -5209,11 +5206,15 @@ async function captureAsImage(x, y, imagewidth) {
             overlays.push(alt1__WEBPACK_IMPORTED_MODULE_11__.encodeImageString(await resizeImageData(abilityImage.toData(), loadedSettings.scale))
                 .replace(transparent, darkRed));
             renderOverlay(imagewidth);
+            history.push({ x: x, y: y });
         }
     }, 50);
-    setTimeout(function () {
+    setTimeout(() => {
+        recentlyDetected = false;
+    }, 450);
+    setTimeout(() => {
         clearHistory();
-    }, 900);
+    }, 1050);
 }
 async function renderOverlay(imagewidth) {
     if (overlays.length > 0) {
