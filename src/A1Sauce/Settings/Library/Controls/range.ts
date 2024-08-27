@@ -143,5 +143,6 @@ export const createRangeSetting = (
 	rangeInput.addEventListener('input', () => {
 		output.innerHTML = rangeInput.value + unit;
 	});
+
 	return container;
 };

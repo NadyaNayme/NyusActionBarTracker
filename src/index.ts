@@ -46,7 +46,7 @@ var abilityHighlight = a1lib.webpackImages({
 });
 
 let history = [];
-async function tryFindAbility() {
+async function tryFindAbility(imagewidth: number) {
 	let client_screen = a1lib.captureHoldFullRs();
 
 	let usedAbility = {
@@ -73,7 +73,8 @@ async function tryFindAbility() {
 		recentlyDetected = true;
 		captureAsImage(
 			usedAbility.abilityPosition[0].x,
-			usedAbility.abilityPosition[0].y
+			usedAbility.abilityPosition[0].y,
+			imagewidth
 		);
 		setTimeout(function () {
 			recentlyDetected = false;
@@ -87,7 +88,7 @@ const overlays: string[] = [
 const transparent = new RegExp('AAA', 'g');
 const darkRed = 'AAB';
 
-async function captureAsImage(x, y) {
+async function captureAsImage(x: number, y: number, imagewidth: number) {
 	if (helperItems.abilityHistory.children.length >= 10) {
 		helperItems.abilityHistory.children.item(0).remove();
 	}
@@ -112,6 +113,7 @@ async function captureAsImage(x, y) {
 					)
 					.replace(transparent, darkRed)
 			);
+			renderOverlay(imagewidth);
 		}
 	}, 50);
 
@@ -121,7 +123,6 @@ async function captureAsImage(x, y) {
 }
 
 async function renderOverlay(imagewidth: number) {
-	console.log(imagewidth);
 	if (overlays.length > 0) {
 		if (overlays.length >= 10) {
 			overlays.shift();
@@ -137,7 +138,7 @@ async function renderOverlay(imagewidth: number) {
 				loadedSettings.y_position,
 				overlays[i],
 				imagewidth,
-				2000
+				30000
 			);
 			alt1.overLayFreezeGroup('AbilityHistory');
 		}
@@ -154,7 +155,7 @@ async function renderOverlay(imagewidth: number) {
 		loadedSettings.y_position,
 		imagewidth,
 		imagewidth,
-		3000,
+		30000,
 		1
 	);
 	alt1.overLayContinueGroup('FirstAbility');
@@ -215,8 +216,7 @@ export async function startApp() {
 
 	const imageWidth = abilityHighlight.placeholder.width;
 
-	setInterval(tryFindAbility, 100);
-	setInterval(renderOverlay, 300, imageWidth);
+	setInterval(tryFindAbility, 100, imageWidth);
 }
 
 function loadSettings() {

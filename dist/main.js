@@ -5166,7 +5166,7 @@ var abilityHighlight = alt1__WEBPACK_IMPORTED_MODULE_11__.webpackImages({
     placeholder: __webpack_require__(/*! ./asset/data/placeholder.data.png */ "./asset/data/placeholder.data.png")
 });
 let history = [];
-async function tryFindAbility() {
+async function tryFindAbility(imagewidth) {
     let client_screen = alt1__WEBPACK_IMPORTED_MODULE_11__.captureHoldFullRs();
     let usedAbility = {
         abilityPosition: client_screen.findSubimage(abilityHighlight.highlightBorder),
@@ -5181,7 +5181,7 @@ async function tryFindAbility() {
             return;
         }
         recentlyDetected = true;
-        captureAsImage(usedAbility.abilityPosition[0].x, usedAbility.abilityPosition[0].y);
+        captureAsImage(usedAbility.abilityPosition[0].x, usedAbility.abilityPosition[0].y, imagewidth);
         setTimeout(function () {
             recentlyDetected = false;
         }, 300);
@@ -5190,7 +5190,7 @@ async function tryFindAbility() {
 const overlays = [];
 const transparent = new RegExp('AAA', 'g');
 const darkRed = 'AAB';
-async function captureAsImage(x, y) {
+async function captureAsImage(x, y, imagewidth) {
     if (helperItems.abilityHistory.children.length >= 10) {
         helperItems.abilityHistory.children.item(0).remove();
     }
@@ -5208,6 +5208,7 @@ async function captureAsImage(x, y) {
         else {
             overlays.push(alt1__WEBPACK_IMPORTED_MODULE_11__.encodeImageString(await resizeImageData(abilityImage.toData(), loadedSettings.scale))
                 .replace(transparent, darkRed));
+            renderOverlay(imagewidth);
         }
     }, 50);
     setTimeout(function () {
@@ -5215,7 +5216,6 @@ async function captureAsImage(x, y) {
     }, 900);
 }
 async function renderOverlay(imagewidth) {
-    console.log(imagewidth);
     if (overlays.length > 0) {
         if (overlays.length >= 10) {
             overlays.shift();
@@ -5226,13 +5226,13 @@ async function renderOverlay(imagewidth) {
             alt1.overLayImage(loadedSettings.x_position +
                 (imagewidth + 2) *
                     i *
-                    (loadedSettings.inverseDirection ? -1 : 1), loadedSettings.y_position, overlays[i], imagewidth, 2000);
+                    (loadedSettings.inverseDirection ? -1 : 1), loadedSettings.y_position, overlays[i], imagewidth, 30000);
             alt1.overLayFreezeGroup('AbilityHistory');
         }
     }
     alt1.overLaySetGroup('FirstAbility');
     alt1.overLayRect(alt1__WEBPACK_IMPORTED_MODULE_11__.mixColor(loadedSettings.red, loadedSettings.green, loadedSettings.blue[2]), loadedSettings.x_position +
-        (imagewidth + 2) * 8 * (loadedSettings.inverseDirection ? -1 : 1), loadedSettings.y_position, imagewidth, imagewidth, 3000, 1);
+        (imagewidth + 2) * 8 * (loadedSettings.inverseDirection ? -1 : 1), loadedSettings.y_position, imagewidth, imagewidth, 30000, 1);
     alt1.overLayContinueGroup('FirstAbility');
 }
 async function clearHistory() {
@@ -5272,8 +5272,7 @@ async function startApp() {
         overlays[i] = alt1__WEBPACK_IMPORTED_MODULE_11__.encodeImageString(abilityHighlight.placeholder);
     }
     const imageWidth = abilityHighlight.placeholder.width;
-    setInterval(tryFindAbility, 100);
-    setInterval(renderOverlay, 300, imageWidth);
+    setInterval(tryFindAbility, 100, imageWidth);
 }
 function loadSettings() {
     loadedSettings.scale = parseInt((0,_A1Sauce_Settings_Storage__WEBPACK_IMPORTED_MODULE_6__.getSetting)('scaleFactor'), 10) / 100;
